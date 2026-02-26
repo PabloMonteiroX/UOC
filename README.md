@@ -1,25 +1,17 @@
+# Ingeniería Informática – UOC
 
-Cada carpeta contiene la resolución correspondiente a la PEC o práctica
-de la asignatura.
+Repositorio académico del Grado en Ingeniería Informática en la Universitat Oberta de Catalunya (UOC).
 
----
+## 🎯 Objetivo
 
-## Entorno de desarrollo
+Organizar y documentar el trabajo desarrollado en las diferentes asignaturas del grado, incluyendo:
 
-- Lenguaje: C
-- Compilador: gcc / clang
-- Análisis estático: clang-tidy
-- Sistema operativo: Linux
-
----
-
-## Notas
-
-- Se respetan estrictamente los literales indicados en los enunciados.
-- Se evita el uso de números mágicos.
-- El código está preparado para validación automática.
+- Diseño y análisis de algoritmos
+- Programación en distintos lenguajes
+- Estructuras de datos
+- Sistemas y arquitectura
+- Bases de datos
+- Ingeniería del software
+- Buenas prácticas y estándares de codificación
 
 ---
-
-Autor: Pablo Monteiro  
-Curso académico 2025–2026
