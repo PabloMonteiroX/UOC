@@ -1,0 +1,28 @@
+algorithm kineticEnergy
+
+    const
+        HALF: real = 0.5;
+    end const
+
+    var
+        mass: real;
+        velocity: real;
+        energy: real;
+    end var
+
+    writeString("INPUT");
+
+    writeString("MASS?");
+    mass := readReal();
+
+    writeString("VELOCITY?");
+    velocity := readReal();
+
+    energy := HALF * mass * velocity * velocity;
+
+    writeString("OUTPUT");
+    
+    writeString("KINETIC ENERGY: ");
+    writeReal(energy);
+
+end algorithm
