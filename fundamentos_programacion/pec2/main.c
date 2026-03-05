@@ -2,46 +2,64 @@
 /*                                                                            */
 /*    UUU   UUU    OOOOO      CCCCC             Ingeniería Informática        */
 /*    UUU   UUU   OOOOOOO    CCCCCCC            Fundamentos de Programación   */
-/*    UUU   UUU  OOO   OOO  CCC                 PEC1 - 20252                  */
+/*    UUU   UUU  OOO   OOO  CCC                 PEC2 - 20252                  */
 /*    UUU   UUU  OOO   OOO  CCC                                               */
 /*    UUU   UUU  OOO   OOO  CCC                 File: main.c                  */
 /*     UUU UUU    OOOOOOO    CCCCCCC            Author: Pablo Monteiro        */
-/*      UUUUU      OOOOO      CCCCC             Created: 2026/02/26           */
+/*      UUUUU      OOOOO      CCCCC             Created: 2026/03/05           */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*Description: C program that calculates the Kinetic Energy (KE) of a moving
- object using the formula KE = 1/2 · m · v².*/
+/*Description: Determines whether the irrigation system must be activated
+based on soil humidity, plant type and outdoor temperature.*/
 
 #include <stdio.h>
+#include <stdbool.h>
 
-#define HALF 0.5F
+#define EMERGENCY_HUMIDITY 10
+#define SUCCULENT_HUMIDITY 20
+#define SHRUB_HUMIDITY 40
+#define TROPICAL_HUMIDITY 60
+#define HEAT_TEMPERATURE 35
+#define HEAT_HUMIDITY 50
 
-float ft_kinetic_energy(float mass, float velocity);
+#define SUCCULENT 0
+#define SHRUB 1
+#define TROPICAL 2
+
+bool	activateIrrigation(float humidity, int plantType, float temperature);
 
 int main(void)
 {
-    float energy = 0.0F;
-    float mass = 0.0F;
-    float velocity = 0.0F;
-    
-    printf("INPUT\n");
-    
-    printf("MASS?\n");
-    scanf("%f", &mass);
-    
-    printf("VELOCITY?\n");
-    scanf("%f", &velocity);
-    
-    energy = ft_kinetic_energy(mass, velocity);
-    
+	float humidity = 0.0F;
+	int plantType = 0;
+	float temperature = 0.0F;
+	bool activate = false;
+
+	printf("INPUT\n");
+
+	printf("HUMIDITY PERCENTAGE?\n");
+	scanf("%f", &humidity);
+
+	printf("PLANT TYPE (0-SUCCULENT, 1-SHRUB, 2-TROPICAL)?\n");
+	scanf("%d", &plantType);
+
+	printf("OUTDOOR TEMPERATURE?\n");
+	scanf("%f", &temperature);
+
+	activate = activateIrrigation(humidity, plantType, temperature);
+
 	printf("OUTPUT\n");
-    printf("KINETIC ENERGY: %.2f\n", energy);
-    
+	printf("ACTIVATING IRRIGATION (0-FALSE, 1-TRUE): %d\n", activate);
+
 	return 0;
 }
 
-float ft_kinetic_energy(float mass, float velocity) //KE = 1/2 · m · v²
+bool	activateIrrigation(float humidity, int plantType, float temperature)
 {
-    return (HALF * mass * velocity * velocity);
+	return	(humidity < EMERGENCY_HUMIDITY) ||
+			(plantType == SUCCULENT && humidity < SUCCULENT_HUMIDITY) ||
+			(plantType == SHRUB && humidity < SHRUB_HUMIDITY) ||
+			(plantType == TROPICAL && humidity < TROPICAL_HUMIDITY) ||
+			(temperature > HEAT_TEMPERATURE && humidity < HEAT_HUMIDITY);
 }
