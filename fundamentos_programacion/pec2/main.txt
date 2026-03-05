@@ -1,0 +1,44 @@
+algorithm activateIrrigation
+
+const
+    EMERGENCY_HUMIDITY: integer = 10;
+    SUCCULENT_HUMIDITY: integer = 20;
+    SHRUB_HUMIDITY: integer = 40;
+    TROPICAL_HUMIDITY: integer = 60;
+    HEAT_TEMPERATURE: integer = 35;
+    HEAT_HUMIDITY: integer = 50;
+
+    SUCCULENT: integer = 0;
+    SHRUB: integer = 1;
+    TROPICAL: integer = 2;
+end const
+
+var
+    humidity: real;
+    plantType: integer;
+    temperature: real;
+    activate: boolean;
+end var
+
+writeString("INPUT");
+writeString("HUMIDITY PERCENTAGE?");
+humidity := readReal();
+
+writeString("PLANT TYPE (0-SUCCULENT, 1-SHRUB, 2-TROPICAL)?")
+plantType := readInteger()
+
+writeString("OUTDOOR TEMPERATURE?")
+temperature := readReal()
+
+activate :=
+		humidity < EMERGENCY_HUMIDITY
+  	or (plantType = SUCCULENT and humidity < SUCCULENT_HUMIDITY)
+  	or (plantType = SHRUB and humidity < SHRUB_HUMIDITY
+  	or (plantType = TROPICAL and humidity < TROPICAL_HUMIDITY)
+  	or (temperature > HEAT_TEMPERATURE and humidity < HEAT_HUMIDITY)
+
+writeString("OUTPUT");
+writeString("ACTIVATING IRRIGATION (0-FALSE, 1-TRUE): ");
+writeInteger(activate);
+
+end algorithm
