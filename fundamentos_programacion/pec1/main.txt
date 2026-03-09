@@ -37,9 +37,9 @@ algorithm kineticEnergy
     end const
 
     var
-        mass: real;
-        velocity: real;
-        energy: real;
+        mass: real := 0.0F;
+        velocity: real := 0.0F;
+        energy: real := 0.0F;
     end var
 
     writeString("INPUT");
