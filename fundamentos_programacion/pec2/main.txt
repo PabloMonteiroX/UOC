@@ -63,16 +63,11 @@ const
 end const
 
 var
-    humidity: real;
-    plantType: integer;
-    temperature: real;
-    activate: boolean;
+    humidity: real := 0.0;
+    plantType: integer := 0;
+    temperature: real := 0.0;
+    activate: boolean := false;
 end var
-
-humidity := 0.0;
-plantType := 0;
-temperature := 0.0;
-activate := false;
 
 writeString("INPUT");
 writeString("HUMIDITY PERCENTAGE?");
