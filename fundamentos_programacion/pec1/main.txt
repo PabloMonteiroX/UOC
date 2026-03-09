@@ -1,3 +1,35 @@
+Fundamentos de programación
+PEC1 - 20252
+Enunciado
+
+Implementar un programa en C que calcule la Energía Cinética (Ec ) de un objeto en
+movimiento. La fórmula que se ha de aplicar es:
+
+𝐸𝑐 = 1/2 · 𝑚𝑎𝑠𝑎 · 𝑣𝑒𝑙𝑜𝑐𝑖𝑑𝑎𝑑²
+
+Entrada de datos
+Se introducirán desde el teclado dos valores, los dos pueden contener decimales:
+
+1. La masa del objeto en kilogramos (kg).
+2. La velocidad del objeto en metros por segundo (m/s).
+
+Salida de datos
+Se mostrará por pantalla el resultado de la energía calculada en Julios (J), con dos
+decimales
+
+Ejemplo de ejecución
+
+INPUT
+MASS?
+75.5
+VELOCITY?
+12.2
+OUTPUT
+KINETIC ENERGY: 5618.71
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 algorithm kineticEnergy
 
     const
