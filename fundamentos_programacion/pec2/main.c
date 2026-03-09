@@ -42,6 +42,12 @@ int main(void)
 	float	temperature;
 	bool	activate;
 
+	/* Initialization of variables */
+	humidity = 0.0F;
+	plantType = 0;
+	temperature = 0.0F;
+	activate = false;
+	
 	/* Input data */
 	printf("INPUT\n");
 
