@@ -69,6 +69,11 @@ var
     activate: boolean;
 end var
 
+humidity := 0.0;
+plantType := 0;
+temperature := 0.0;
+activate := false;
+
 writeString("INPUT");
 writeString("HUMIDITY PERCENTAGE?");
 humidity := readReal();
