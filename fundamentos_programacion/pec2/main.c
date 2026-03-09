@@ -37,10 +37,10 @@ based on soil humidity, plant type and outdoor temperature. */
 int main(void)
 {
 	/* Definition of variables */
-	float	humidity;
-	int		plantType;
-	float	temperature;
-	bool	activate;
+	float	humidity = 0.0F;
+	int		plantType = 0;
+	float	temperature = 0.0F;
+	bool	activate = false;
 
 	/* Initialization of variables */
 	humidity = 0.0F;
