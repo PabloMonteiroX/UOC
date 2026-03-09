@@ -13,23 +13,18 @@
 /* Description: Determines whether the irrigation system must be activated
 based on soil humidity, plant type and outdoor temperature. */
 
-/* Standard input/output library */
-#include <stdio.h>
-
-/* Standard boolean type library */
-#include <stdbool.h>
+#include <stdio.h> /* Standard input/output library */
+#include <stdbool.h> /* Standard boolean type library */
 
 /* Humidity thresholds */
 #define EMERGENCY_HUMIDITY 10
 #define SUCCULENT_HUMIDITY 20
 #define SHRUB_HUMIDITY 40
 #define TROPICAL_HUMIDITY 60
-
 /* Heat condition thresholds */
 #define HEAT_TEMPERATURE 35
 #define HEAT_HUMIDITY 50
-
-/* Plant type identifiers */
+/* Plant types */
 #define SUCCULENT 0
 #define SHRUB 1
 #define TROPICAL 2
