@@ -42,5 +42,6 @@ int main(void)
 	printf("OUTPUT\n");
     printf("KINETIC ENERGY: %.2f\n", energy);
 
+	/* End of program */
 	return 0;
 }
