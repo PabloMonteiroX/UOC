@@ -7,7 +7,7 @@ algorithm kineticEnergy
     var
         mass: real;
         velocity: real;
-        energy: boolean;
+        energy: real;
     end var
 
     writeString("INPUT");
@@ -23,6 +23,6 @@ algorithm kineticEnergy
     writeString("OUTPUT");
     
     writeString("KINETIC ENERGY: ");
-    writeBoolean(energy);
+    writeReal(energy);
 
 end algorithm
