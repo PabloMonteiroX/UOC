@@ -10,38 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*Description: C program that calculates the Kinetic Energy (KE) of a moving
- object using the formula KE = 1/2 · m · v².*/
+/* Description: C program that calculates the Kinetic Energy (KE) of a moving
+ object using the formula KE = 1/2 · m · v². */
 
+/* Standard input/output library */
 #include <stdio.h>
 
+/* Factor 1/2 used in KE */
 #define HALF 0.5F
-
-float ft_kinetic_energy(float mass, float velocity);
 
 int main(void)
 {
+    /* Definition of variables */
     float energy = 0.0F;
     float mass = 0.0F;
     float velocity = 0.0F;
-    
+
+    /* Input data */
     printf("INPUT\n");
-    
+
     printf("MASS?\n");
     scanf("%f", &mass);
-    
+
     printf("VELOCITY?\n");
     scanf("%f", &velocity);
-    
-    energy = ft_kinetic_energy(mass, velocity);
-    
+
+    /* Process data */
+    energy = HALF * mass * velocity * velocity;
+
+    /* Output data */
 	printf("OUTPUT\n");
     printf("KINETIC ENERGY: %.2f\n", energy);
-    
-	return 0;
-}
 
-float ft_kinetic_energy(float mass, float velocity) //KE = 1/2 · m · v²
-{
-    return (HALF * mass * velocity * velocity);
+	return 0;
 }
