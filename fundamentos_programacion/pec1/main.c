@@ -21,26 +21,31 @@
 
 int main(void)
 {
-    /* Definition of variables */
-    float energy;
-    float mass;
-    float velocity;
+	/* Definition of variables */
+	float energy;
+	float mass;
+	float velocity;
 
-    /* Input data */
-    printf("INPUT\n");
+	/* Initialization of variables */
+	energy = 0.0F;
+	mass = 0.0F;
+	velocity = 0.0F;
 
-    printf("MASS?\n");
-    scanf("%f", &mass);
+	/* Input data */
+	printf("INPUT\n");
 
-    printf("VELOCITY?\n");
-    scanf("%f", &velocity);
+	printf("MASS?\n");
+	scanf("%f", &mass);
 
-    /* Process data */
-    energy = HALF * mass * velocity * velocity;
+	printf("VELOCITY?\n");
+	scanf("%f", &velocity);
 
-    /* Output data */
+	/* Process data */
+	energy = HALF * mass * velocity * velocity;
+
+	/* Output data */
 	printf("OUTPUT\n");
-    printf("KINETIC ENERGY: %.2f\n", energy);
+	printf("KINETIC ENERGY: %.2f\n", energy);
 
 	/* End of program */
 	return 0;
