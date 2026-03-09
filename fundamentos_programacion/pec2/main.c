@@ -37,17 +37,11 @@ based on soil humidity, plant type and outdoor temperature. */
 int main(void)
 {
 	/* Definition of variables */
-	float	humidity = 0.0F;
+	float	humidity = 0.0;
 	int		plantType = 0;
-	float	temperature = 0.0F;
+	float	temperature = 0.0;
 	bool	activate = false;
 
-	/* Initialization of variables */
-	humidity = 0.0F;
-	plantType = 0;
-	temperature = 0.0F;
-	activate = false;
-	
 	/* Input data */
 	printf("INPUT\n");
 
