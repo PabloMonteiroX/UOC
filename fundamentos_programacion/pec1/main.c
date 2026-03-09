@@ -22,9 +22,9 @@
 int main(void)
 {
     /* Definition of variables */
-    float energy = 0.0F;
-    float mass = 0.0F;
-    float velocity = 0.0F;
+    float energy;
+    float mass;
+    float velocity;
 
     /* Input data */
     printf("INPUT\n");
