@@ -1,18 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*    UUU   UUU    OOOOO      CCCCC             Ingeniería Informática        */
-/*    UUU   UUU   OOOOOOO    CCCCCCC            Fundamentos de Programación   */
-/*    UUU   UUU  OOO   OOO  CCC                 PEC2 - 20252                  */
-/*    UUU   UUU  OOO   OOO  CCC                                               */
-/*    UUU   UUU  OOO   OOO  CCC                 File: main.c                  */
-/*     UUU UUU    OOOOOOO    CCCCCCC            Author: Pablo Monteiro        */
-/*      UUUUU      OOOOO      CCCCC             Created: 2026/03/05           */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* Description: Determines whether the irrigation system must be activated
-based on soil humidity, plant type and outdoor temperature. */
-
 #include <stdio.h> /* Standard input/output library */
 #include <stdbool.h> /* Standard boolean type library */
 
@@ -31,35 +16,33 @@ based on soil humidity, plant type and outdoor temperature. */
 
 int main(void)
 {
-	/* Definition of variables */
-	float	humidity = 0.0;
-	int		plantType = 0;
-	float	temperature = 0.0;
-	bool	activate = false;
+    /* Variable declarations */
+    float humidity    = 0.0;
+    int   plantType   = 0;
+    float temperature = 0.0;
+    bool  activate    = false;
 
-	/* Input data */
-	printf("INPUT\n");
+    /* Input section */
+    printf("INPUT\n");
+    printf("HUMIDITY PERCENTAGE?\n");
+    scanf("%f", &humidity);
 
-	printf("HUMIDITY PERCENTAGE?\n");
-	scanf("%f", &humidity);
+    printf("PLANT TYPE (0-SUCCULENT, 1-SHRUB, 2-TROPICAL)?\n");
+    scanf("%d", &plantType);
 
-	printf("PLANT TYPE (0-SUCCULENT, 1-SHRUB, 2-TROPICAL)?\n");
-	scanf("%d", &plantType);
+    printf("OUTDOOR TEMPERATURE?\n");
+    scanf("%f", &temperature);
 
-	printf("OUTDOOR TEMPERATURE?\n");
-	scanf("%f", &temperature);
+    /* Processing section */
+    activate = (humidity < EMERGENCY_HUMIDITY)
+            || (plantType == SUCCULENT && humidity < SUCCULENT_HUMIDITY)
+            || (plantType == SHRUB     && humidity < SHRUB_HUMIDITY)
+            || (plantType == TROPICAL  && humidity < TROPICAL_HUMIDITY)
+            || (temperature > HEAT_TEMPERATURE && humidity < HEAT_HUMIDITY);
 
-	/* Process data */
-	activate =	(humidity < EMERGENCY_HUMIDITY) 								||
-				(plantType == SUCCULENT && humidity < SUCCULENT_HUMIDITY) 		||
-				(plantType == SHRUB && humidity < SHRUB_HUMIDITY) 				||
-				(plantType == TROPICAL && humidity < TROPICAL_HUMIDITY)			||
-				(temperature > HEAT_TEMPERATURE && humidity < HEAT_HUMIDITY);
+    /* Output section */
+    printf("OUTPUT\n");
+    printf("ACTIVATING IRRIGATION (0-FALSE, 1-TRUE): %d\n", activate);
 
-	/* Output data */
-	printf("OUTPUT\n");
-	printf("ACTIVATING IRRIGATION (0-FALSE, 1-TRUE): %d\n", activate);
-
-	/* End of program */
-	return 0;
+    return 0;
 }
