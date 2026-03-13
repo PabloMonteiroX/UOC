@@ -1,3 +1,191 @@
+Fundamentos de programación
+PEC3 - 20252
+Enunciado
+
+Un centro logístico utiliza una matriz de 3x3 para monitorizar el stock de 9 estanterías de
+un almacén automatizado. Cada celda de la matriz contiene un número entero que
+representa la cantidad de unidades de un producto. El sistema debe determinar el estado
+del almacén según los siguientes criterios, ordenados de más prioritario a menos (sólo se
+mostrará el primero que se cumpla):
+
+●​ STOCK OUT: Si alguna de las estanterías tiene 0 unidades.
+●​ ZONE WARNING: Si la suma de unidades de cualquiera de las tres filas (Zonas)
+es inferior a 15.
+●​ LOW INVENTORY: Si la suma total de todas las unidades del almacén es inferior
+a 100.
+●​ OPERATIONAL: Si no se cumple ninguna de las condiciones anteriores.
+
+Se pide implementar un programa en C que:
+
+1.​ Lea el nombre de un fichero de texto del teclado.
+2.​ Cargue los números en una matriz de 3x3.
+3.​ Verifique el estado del almacén según los criterios descritos.
+
+Entrada de datos
+Se introducirá por teclado el nombre del archivo (máximo 15 caracteres) que contiene 9
+números enteros organizados en formato de matriz 3x3.
+
+Salida de datos
+Se mostrará el estado jerárquico del almacén según los literales indicados.
+Ejemplo de ejecución
+
+En el anexo del final de este documento podéis consultar un ejemplo de ejecución del
+programa en lenguaje C: revisadlo para utilizar los literales exactos para resolver el
+ejercicio. Tened en cuenta que la corrección se hace de manera automática.
+
+Anexo
+
+Caso 1. Si el contenido del fichero warehouse1.txt es:
+
+10 20 30
+5 0 40
+15 15 15
+
+El programa tiene que mostrar la siguiente salida por pantalla:
+
+INPUT
+FILENAME?
+warehouse1.txt
+OUTPUT
+STOCK OUT
+
+Caso 2. Si el contenido del fichero warehouse2.txt es:
+
+10 2 1
+20 20 20
+30 30 30
+
+El programa tiene que mostrar la siguiente salida por pantalla:
+
+INPUT
+FILENAME?
+warehouse2.txt
+OUTPUT
+ZONE WARNING
+
+Caso 3. Si el contenido del fichero warehouse3.txt es:
+
+10 10 10
+10 10 10
+10 10 10
+
+El programa tiene que mostrar la siguiente salida por pantalla:
+
+INPUT
+FILENAME?
+warehouse3.txt
+OUTPUT
+LOW INVENTORY
+
+Caso 4. Si el contenido del fichero warehouse4.txt es:
+
+20 10 33
+10 35 10
+55 10 60
+
+El programa tiene que mostrar la siguiente salida por pantalla:
+
+INPUT
+FILENAME?
+warehouse4.txt
+OUTPUT
+OPERATIONAL
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+algorithm inventoryManagement
+
+    const
+        MAX_LEN: integer = 16;
+        ROWS: integer = 3;
+        COLS: integer = 3;
+        STOCK_OUT: integer = 0;
+        ZONE_WARNING: integer = 15;
+        LOW_INVENTORY: integer = 100;
+        STATE_STOCK_OUT: integer = 0;
+        STATE_ZONE_WARNING: integer = 1;
+        STATE_LOW_INVENTORY: integer = 2;
+        STATE_OPERATIONAL: integer = 3;
+    end const
+
+    var
+        filename: string;
+        stock: matrix[ROWS][COLS] of integer;
+        file: file Pointer;  { O simplemente file de tipo fichero }
+        zone0Total: integer;
+        zone1Total: integer;
+        zone2Total: integer;
+        total: integer;
+        state: integer;
+    end var
+
+    { Input section }
+    writeString("INPUT");
+    writeString("FILENAME?");
+    filename := readString();
+
+    file := openFile(filename, "r");
+    
+    { Lectura de la matriz desde fichero }
+    stock[1][1] := readIntegerFromFile(file);
+    stock[1][2] := readIntegerFromFile(file);
+    stock[1][3] := readIntegerFromFile(file);
+    stock[2][1] := readIntegerFromFile(file);
+    stock[2][2] := readIntegerFromFile(file);
+    stock[2][3] := readIntegerFromFile(file);
+    stock[3][1] := readIntegerFromFile(file);
+    stock[3][2] := readIntegerFromFile(file);
+    stock[3][3] := readIntegerFromFile(file);
+    
+    closeFile(file);
+
+    { Processing section }
+    zone0Total := stock[1][1] + stock[1][2] + stock[1][3];
+    zone1Total := stock[2][1] + stock[2][2] + stock[2][3];
+    zone2Total := stock[3][1] + stock[3][2] + stock[3][3];
+    
+    total := zone0Total + zone1Total + zone2Total;
+
+    if (stock[1][1] = STOCK_OUT or stock[1][2] = STOCK_OUT or stock[1][3] = STOCK_OUT or
+        stock[2][1] = STOCK_OUT or stock[2][2] = STOCK_OUT or stock[2][3] = STOCK_OUT or
+        stock[3][1] = STOCK_OUT or stock[3][2] = STOCK_OUT or stock[3][3] = STOCK_OUT) then
+        
+        state := STATE_STOCK_OUT;
+        
+    else if (zone0Total < ZONE_WARNING or zone1Total < ZONE_WARNING or zone2Total < ZONE_WARNING) then
+        
+        state := STATE_ZONE_WARNING;
+        
+    else if (total < LOW_INVENTORY) then
+        
+        state := STATE_LOW_INVENTORY;
+        
+    else
+        
+        state := STATE_OPERATIONAL;
+        
+    end if
+
+    { Output section }
+    writeString("OUTPUT");
+
+    switch state do
+        case STATE_STOCK_OUT:
+            writeString("STOCK OUT");
+        case STATE_ZONE_WARNING:
+            writeString("ZONE WARNING");
+        case STATE_LOW_INVENTORY:
+            writeString("LOW INVENTORY");
+        default:
+            writeString("OPERATIONAL");
+    end switch
+
+end algorithm
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 /* ************************************************************************** */
 /*                                                                            */
 /*    UUU   UUU    OOOOO      CCCCC             Ingeniería Informática        */
