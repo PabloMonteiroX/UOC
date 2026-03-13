@@ -4,6 +4,15 @@ de la asignatura.
 
 ---
 
+## Contenido
+
+| Carpeta | Descripción | README |
+|---------|-------------|--------|
+| `pec1/` | Cálculo de la Energía Cinética (`Ec = ½·m·v²`) | [Ver análisis](pec1/README.md) |
+| `pec2/` | Sistema de riego inteligente (expresión booleana sin condicionales) | [Ver análisis](pec2/README.md) |
+
+---
+
 ## Entorno de desarrollo
 
 - Lenguaje: C
