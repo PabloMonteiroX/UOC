@@ -21,21 +21,19 @@ matrix, and processes the information to display the results. */
 #define STOCK_OUT 0
 #define ZONE_WARNING 15
 #define LOW_INVENTORY 100
-#define STATE_STOCK_OUT 0
-#define STATE_ZONE_WARNING 1
-#define STATE_LOW_INVENTORY 2
-#define STATE_OPERATIONAL 3
+
+typedef enum {TSTOCK_OUT, TZONE_WARNING, TLOW_INVENTORY, TOPERATIONAL} tState;
 
 int main(void) {
 /* ------------------------- Variable declarations -------------------------- */
-    FILE *file;
-    char filename[MAX_LEN];
-    int stock[ROWS][COLS];
-    int zone0Total;
-    int zone1Total;
-    int zone2Total;
-    int total;
-    int state;
+    tState state;
+    FILE   *file;
+    char   filename[MAX_LEN];
+    int    stock[ROWS][COLS];
+    int    zone0Total;
+    int    zone1Total;
+    int    zone2Total;
+    int    total;
 /* ----------------------------- Input section ------------------------------ */
     printf("INPUT\n");
     printf("FILENAME?\n");
@@ -47,7 +45,6 @@ int main(void) {
     fscanf(file, "%d %d %d", &stock[2][0], &stock[2][1], &stock[2][2]);
     fclose(file);
 /* --------------------------- Processing section --------------------------- */
-
     /* calculate total rows */
     zone0Total = stock[0][0] + stock[0][1] + stock[0][2];
     zone1Total = stock[1][0] + stock[1][1] + stock[1][2];
@@ -65,42 +62,41 @@ int main(void) {
         stock[2][1] == STOCK_OUT ||
         stock[2][2] == STOCK_OUT) {
 
-        state = STATE_STOCK_OUT;
+        state = TSTOCK_OUT;
 
     } else if (zone0Total < ZONE_WARNING ||
                zone1Total < ZONE_WARNING ||
                zone2Total < ZONE_WARNING) {
 
-        state = STATE_ZONE_WARNING;
+        state = TZONE_WARNING;
 
     } else if (total < LOW_INVENTORY) {
 
-        state = STATE_LOW_INVENTORY;
+        state = TLOW_INVENTORY;
 
     } else {
 
-        state = STATE_OPERATIONAL;
+        state = TOPERATIONAL;
     }
 /* ----------------------------- Output section ----------------------------- */
     printf("OUTPUT\n");
 
     switch (state) {
 
-        case STATE_STOCK_OUT:
+        case TSTOCK_OUT:
             printf("STOCK OUT\n");
             break;
 
-        case STATE_ZONE_WARNING:
+        case TZONE_WARNING:
             printf("ZONE WARNING\n");
             break;
 
-        case STATE_LOW_INVENTORY:
+        case TLOW_INVENTORY:
             printf("LOW INVENTORY\n");
             break;
 
         default:
             printf("OPERATIONAL\n");
-
     }
     return 0;
 }
