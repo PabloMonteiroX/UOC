@@ -97,27 +97,25 @@ OPERATIONAL
 algorithm inventoryManagement
 
     const
-        MAX_LEN: integer = 16;
-        ROWS: integer = 3;
-        COLS: integer = 3;
-        STOCK_OUT: integer = 0;
-        ZONE_WARNING: integer = 15;
-        LOW_INVENTORY: integer = 100;
-        STATE_STOCK_OUT: integer = 0;
-        STATE_ZONE_WARNING: integer = 1;
-        STATE_LOW_INVENTORY: integer = 2;
-        STATE_OPERATIONAL: integer = 3;
+    MAX_LEN: integer = 16;
+    ROWS: integer = 3;
+    COLS: integer = 3;
+    STOCK_OUT: integer = 0;
+    ZONE_WARNING: integer = 15;
+    LOW_INVENTORY: integer = 100;
     end const
 
+    type
+    tState = { OPERATIONAL, OUT, WARNING, LOW }
+    end type
+
     var
-        filename: string;
-        stock: matrix[ROWS][COLS] of integer;
-        file: file Pointer;  { O simplemente file de tipo fichero }
-        zone0Total: integer;
-        zone1Total: integer;
-        zone2Total: integer;
+        state: tState;
+        file: file;
+        fname: string;
+        stk: matrix[ROWS][COLS] of integer;
+        row0, row1, row2: integer;
         total: integer;
-        state: integer;
     end var
 
     { Input section }
@@ -126,56 +124,70 @@ algorithm inventoryManagement
     filename := readString();
 
     file := openFile(filename, "r");
-    
+
     { Lectura de la matriz desde fichero }
-    stock[1][1] := readIntegerFromFile(file);
-    stock[1][2] := readIntegerFromFile(file);
-    stock[1][3] := readIntegerFromFile(file);
-    stock[2][1] := readIntegerFromFile(file);
-    stock[2][2] := readIntegerFromFile(file);
-    stock[2][3] := readIntegerFromFile(file);
-    stock[3][1] := readIntegerFromFile(file);
-    stock[3][2] := readIntegerFromFile(file);
-    stock[3][3] := readIntegerFromFile(file);
-    
+    stk[1][1] := readInteger(file);
+    stk[1][2] := readInteger(file);
+    stk[1][3] := readInteger(file);
+
+    stk[2][1] := readInteger(file);
+    stk[2][2] := readInteger(file);
+    stk[2][3] := readInteger(file);
+
+    stk[3][1] := readInteger(file);
+    stk[3][2] := readInteger(file);
+    stk[3][3] := readInteger(file);
+
     closeFile(file);
 
     { Processing section }
-    zone0Total := stock[1][1] + stock[1][2] + stock[1][3];
-    zone1Total := stock[2][1] + stock[2][2] + stock[2][3];
-    zone2Total := stock[3][1] + stock[3][2] + stock[3][3];
-    
-    total := zone0Total + zone1Total + zone2Total;
+    row0 := stock[1][1] + stock[1][2] + stock[1][3];
+    row1 := stock[2][1] + stock[2][2] + stock[2][3];
+    row2 := stock[3][1] + stock[3][2] + stock[3][3];
 
-    if (stock[1][1] = STOCK_OUT or stock[1][2] = STOCK_OUT or stock[1][3] = STOCK_OUT or
-        stock[2][1] = STOCK_OUT or stock[2][2] = STOCK_OUT or stock[2][3] = STOCK_OUT or
-        stock[3][1] = STOCK_OUT or stock[3][2] = STOCK_OUT or stock[3][3] = STOCK_OUT) then
-        
-        state := STATE_STOCK_OUT;
-        
-    else if (zone0Total < ZONE_WARNING or zone1Total < ZONE_WARNING or zone2Total < ZONE_WARNING) then
-        
-        state := STATE_ZONE_WARNING;
-        
+    total := row0 + row1 + row2;
+
+    row0 := stk[1][1] + stk[1][2] + stk[1][3];
+    row1 := stk[2][1] + stk[2][2] + stk[2][3];
+    row2 := stk[3][1] + stk[3][2] + stk[3][3];
+
+    total := row0 + row1 + row2;
+
+    if stk[1][1] = STOCK_OUT or
+       stk[1][2] = STOCK_OUT or
+       stk[1][3] = STOCK_OUT or
+       stk[2][1] = STOCK_OUT or
+       stk[2][2] = STOCK_OUT or
+       stk[2][3] = STOCK_OUT or
+       stk[3][1] = STOCK_OUT or
+       stk[3][2] = STOCK_OUT or
+       stk[3][3] = STOCK_OUT then
+
+        state := OUT;
+
+    else if (row0 < ZONE_WARNING or row1 < ZONE_WARNING or row2 < ZONE_WARNING) then
+
+        state := WARNING;
+
     else if (total < LOW_INVENTORY) then
-        
-        state := STATE_LOW_INVENTORY;
-        
+
+        state := LOW;
+
     else
-        
-        state := STATE_OPERATIONAL;
-        
+
+        state := OPERATIONAL;
+
     end if
 
     { Output section }
     writeString("OUTPUT");
 
     switch state do
-        case STATE_STOCK_OUT:
+        case OUT:
             writeString("STOCK OUT");
-        case STATE_ZONE_WARNING:
+        case WARNING:
             writeString("ZONE WARNING");
-        case STATE_LOW_INVENTORY:
+        case LOW:
             writeString("LOW INVENTORY");
         default:
             writeString("OPERATIONAL");
@@ -203,83 +215,85 @@ matrix, and processes the information to display the results. */
 
 #include <stdio.h>
 
-#define MAX_LEN (15 + 1)
+#define MAX_LEN 16
 #define ROWS 3
 #define COLS 3
 #define STOCK_OUT 0
 #define ZONE_WARNING 15
 #define LOW_INVENTORY 100
 
-typedef enum {TSTOCK_OUT, TZONE_WARNING, TLOW_INVENTORY, TOPERATIONAL} tState;
+typedef enum {OPERATIONAL, OUT, WARNING, LOW,} tState;
 
 int main(void) {
 /* ------------------------- Variable declarations -------------------------- */
     tState state;
     FILE   *file;
-    char   filename[MAX_LEN];
-    int    stock[ROWS][COLS];
-    int    zone0Total;
-    int    zone1Total;
-    int    zone2Total;
+    char   fname[MAX_LEN];
+    int    stk[ROWS][COLS];
+    int    row0;
+    int    row1;
+    int    row2;
     int    total;
 /* ----------------------------- Input section ------------------------------ */
     printf("INPUT\n");
     printf("FILENAME?\n");
-    scanf("%15s", filename);
-
-    file = fopen(filename, "r");
-    fscanf(file, "%d %d %d", &stock[0][0], &stock[0][1], &stock[0][2]);
-    fscanf(file, "%d %d %d", &stock[1][0], &stock[1][1], &stock[1][2]);
-    fscanf(file, "%d %d %d", &stock[2][0], &stock[2][1], &stock[2][2]);
+    scanf("%15s", fname);
+    file = fopen(fname, "r");
+    fscanf(file, "%d %d %d", &stk[0][0], &stk[0][1], &stk[0][2]);
+    fscanf(file, "%d %d %d", &stk[1][0], &stk[1][1], &stk[1][2]);
+    fscanf(file, "%d %d %d", &stk[2][0], &stk[2][1], &stk[2][2]);
     fclose(file);
 /* --------------------------- Processing section --------------------------- */
-    /* calculate total rows */
-    zone0Total = stock[0][0] + stock[0][1] + stock[0][2];
-    zone1Total = stock[1][0] + stock[1][1] + stock[1][2];
-    zone2Total = stock[2][0] + stock[2][1] + stock[2][2];
-    /* calculate total matrix */
-    total = zone0Total + zone1Total + zone2Total;
+    row0  = 0;
+    row1  = 0;
+    row2  = 0;
+    total = 0;
+    state = OPERATIONAL;
+    row0  = stk[0][0] + stk[0][1] + stk[0][2];
+    row1  = stk[1][0] + stk[1][1] + stk[1][2];
+    row2  = stk[2][0] + stk[2][1] + stk[2][2];
+    total = row0 + row1 + row2;
 
-    if (stock[0][0] == STOCK_OUT ||
-        stock[0][1] == STOCK_OUT ||
-        stock[0][2] == STOCK_OUT ||
-        stock[1][0] == STOCK_OUT ||
-        stock[1][1] == STOCK_OUT ||
-        stock[1][2] == STOCK_OUT ||
-        stock[2][0] == STOCK_OUT ||
-        stock[2][1] == STOCK_OUT ||
-        stock[2][2] == STOCK_OUT) {
+    if (stk[0][0] == STOCK_OUT ||
+        stk[0][1] == STOCK_OUT ||
+        stk[0][2] == STOCK_OUT ||
+        stk[1][0] == STOCK_OUT ||
+        stk[1][1] == STOCK_OUT ||
+        stk[1][2] == STOCK_OUT ||
+        stk[2][0] == STOCK_OUT ||
+        stk[2][1] == STOCK_OUT ||
+        stk[2][2] == STOCK_OUT) {
 
-        state = TSTOCK_OUT;
+        state = OUT;
 
-    } else if (zone0Total < ZONE_WARNING ||
-               zone1Total < ZONE_WARNING ||
-               zone2Total < ZONE_WARNING) {
+    } else if (row0 < ZONE_WARNING ||
+               row1 < ZONE_WARNING ||
+               row2 < ZONE_WARNING) {
 
-        state = TZONE_WARNING;
+        state = WARNING;
 
     } else if (total < LOW_INVENTORY) {
 
-        state = TLOW_INVENTORY;
+        state = LOW;
 
     } else {
 
-        state = TOPERATIONAL;
+        state = OPERATIONAL;
     }
 /* ----------------------------- Output section ----------------------------- */
     printf("OUTPUT\n");
 
     switch (state) {
 
-        case TSTOCK_OUT:
+        case OUT:
             printf("STOCK OUT\n");
             break;
 
-        case TZONE_WARNING:
+        case WARNING:
             printf("ZONE WARNING\n");
             break;
 
-        case TLOW_INVENTORY:
+        case LOW:
             printf("LOW INVENTORY\n");
             break;
 

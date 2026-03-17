@@ -10,17 +10,15 @@
 #define HEAT_TEMPERATURE 35
 #define HEAT_HUMIDITY 50
 /* Plant types */
-#define SUCCULENT 0
-#define SHRUB 1
-#define TROPICAL 2
+typedef enum {SUCCULENT, SHRUB, TROPICAL} tPlantType;
 
 int main(void)
 {
     /* Variable declarations */
-    float humidity    = 0.0;
-    int   plantType   = 0;
-    float temperature = 0.0;
-    bool  activate    = false;
+    float humidity;
+    tPlantType plantType;
+    float temperature;
+    bool  activate;
 
     /* Input section */
     printf("INPUT\n");
@@ -28,7 +26,7 @@ int main(void)
     scanf("%f", &humidity);
 
     printf("PLANT TYPE (0-SUCCULENT, 1-SHRUB, 2-TROPICAL)?\n");
-    scanf("%d", &plantType);
+    scanf("%u", &plantType);
 
     printf("OUTDOOR TEMPERATURE?\n");
     scanf("%f", &temperature);
