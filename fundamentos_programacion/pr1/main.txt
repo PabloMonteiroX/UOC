@@ -1,0 +1,173 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*    UUU   UUU    OOOOO      CCCCC             Ingeniería Informática        */
+/*    UUU   UUU   OOOOOOO    CCCCCCC            Fundamentos de Programación   */
+/*    UUU   UUU  OOO   OOO  CCC                 PEC3 - 20252                  */
+/*    UUU   UUU  OOO   OOO  CCC                                               */
+/*    UUU   UUU  OOO   OOO  CCC                 File: main.c                  */
+/*     UUU UUU    OOOOOOO    CCCCCCC            Author: Pablo Monteiro        */
+/*      UUUUU      OOOOO      CCCCC             Created: 2026/03/19           */
+/*                                                                            */
+/* ************************************************************************** */
+
+/*  */
+
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_READINGS 100
+#define MAX_LEN 15
+
+typedef enum {VALLEY, FLAT, PEAK} tTariffType;
+
+int main(void) {
+/* --------------------------- Variable declaration ------------------------- */
+    bool            readSuccess[MAX_READINGS];
+    tTariffType     tariffData[MAX_READINGS];
+    double          powerData[MAX_READINGS];
+    double          invalidValues[MAX_READINGS];
+
+    char            fname[MAX_LEN];
+    FILE            *file;
+
+    int             tempTariff;
+    int             count;
+    int             i;
+
+    double          totalSum;
+    double          average;
+    double          max;
+    tTariffType     maxTariff;
+
+    int             validPower;
+    int             invalidPower;
+
+    int             valleyCount;
+    int             flatCount;
+    int             peakCount;
+
+ /* --------------------------- Initialization ------------------------------ */
+
+    tempTariff   = 0;
+    count        = 0;
+    i            = 0;
+
+    totalSum     = 0.0;
+    average      = 0.0;
+    max          = 0.0;
+    maxTariff    = VALLEY;
+
+    validPower   = 0;
+    invalidPower = 0;
+
+    valleyCount  = 0;
+    flatCount    = 0;
+    peakCount    = 0;
+/* ----------------------------- Input section ------------------------------ */
+
+    printf("--- Smart Grid Analysis System (PR1) ---\n");
+    printf("LOAD DATA FROM FILE. ENTER FILE NAME >> ");
+    scanf("%14s", fname);
+
+    file = fopen(fname, "r");
+    fscanf(file, "%d", &count);
+
+    if (count > MAX_READINGS) {
+
+        count = MAX_READINGS;
+    }
+
+   for (i = 0; i < count; i++) {
+
+        fscanf(file, "%lf %d", &powerData[i], &tempTariff);
+
+        /* Convert tariff */
+        if (tempTariff == 1) {
+            tariffData[i] = VALLEY;
+        } else if (tempTariff == 2) {
+            tariffData[i] = FLAT;
+        } else {
+            tariffData[i] = PEAK;
+        }
+
+        /* Validate reading */
+        if (powerData[i] >= 0) {
+            readSuccess[i] = true;
+            validPower++;
+        } else {
+            readSuccess[i] = false;
+            invalidValues[invalidPower] = powerData[i];
+            invalidPower++;
+        }
+    }
+    fclose(file);
+
+/* --------------------------- Processing section --------------------------- */
+
+
+    for (i = 0; i < count; i++) {
+
+    if (readSuccess[i]) {
+
+        totalSum += powerData[i];
+
+        if (powerData[i] > max) {
+            max = powerData[i];
+            maxTariff = tariffData[i];
+        }
+
+        if (tariffData[i] == VALLEY) {
+            valleyCount++;
+        } else if (tariffData[i] == FLAT) {
+            flatCount++;
+        } else {
+            peakCount++;
+        }
+    }
+    }
+
+    if (validPower > 0) {
+
+        average = totalSum / validPower;
+
+    }
+
+/* ----------------------------- Output section ----------------------------- */
+    printf("\nProcessing %d records...\n", count);
+    printf("----------------------------------------\n");
+    printf("ANALYSIS SUMMARY\n");
+    printf("----------------------------------------\n");
+
+    if (validPower > 0) {
+
+    printf("Total consumption: %.2f kW\n", totalSum);
+    printf("Average power: %.2f kW\n", average);
+
+    printf("Maximum peak: %.2f kW (Tariff: ", max);
+
+    if (maxTariff == VALLEY) {
+        printf("VALLEY");
+    } else if (maxTariff == FLAT) {
+        printf("FLAT");
+    } else {
+        printf("PEAK");
+    }
+    printf(")\n\n");
+
+    printf("lDistribution by Tariff:\n");
+    printf("- Valley intervals: %d\n", valleyCount);
+    printf("- Flat intervals: %d\n", flatCount);
+    printf("- Peak intervals: %d\n\n", peakCount);
+
+    printf("Discarded readings: %d\n", invalidPower);
+
+    for (i = 0; i < invalidPower; i++) {
+        printf("%.2f kW\n", invalidValues[i]);
+    }
+
+    printf("----------------------------------------\n");
+
+    } else {
+        printf("No valid data found to perform analysis.\n");
+    }
+}
