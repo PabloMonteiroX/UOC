@@ -13,11 +13,12 @@
 /* This program performs a statistical analysis of power consumption from a
    Smart Grid system. It reads electrical readings and tariff codes from a text
    file, validates the data (discarding negativevalues), and calculates total
-   consumption, averages, and peaks.                                          */
+   consumption, averages, and peaks. */
 
 #include <stdio.h>
-#include <stdbool.h>
 
+#define ROUNDING_OFFSET 0.5
+#define DECIMAL_FACTOR 100
 #define MAX_READINGS 100
 #define MAX_LEN 16
 
@@ -25,55 +26,55 @@ typedef enum {VALLEY, FLAT, PEAK} tTariffType;
 
 int main(void) {
 /* --------------------------- Variable declaration ------------------------- */
-    double          powerData[MAX_READINGS];
-    tTariffType     tariffData[MAX_READINGS];
-    double          totalConsumption;
-    int             totalElements;
-    int             validReadingsCount;
-    int             invalidReadingsCount;
     double          invalidValues[MAX_READINGS];
-    double          averagePower;
-
-    int             i;
+    tTariffType     tariffData[MAX_READINGS];
+    double          powerData[MAX_READINGS];
+    int             invalidReadingsCount;
+    int             validReadingsCount;
     char            filename[MAX_LEN];
-    FILE            *fileToRead;
-
+    double          totalConsumption;
     int             tempTariffCode;
-    double          maxPower;
-    tTariffType     maxTariff;
+    int             totalElements;
+    double          averagePower;
+    double          tempAverage;
+    FILE            *fileToRead;
     int             countValley;
+    tTariffType     maxTariff;
     int             countFlat;
     int             countPeak;
-
+    double          maxPower;
+    int             i;
 /* ---------------------------- Initialization ------------------------------ */
-    totalConsumption = 0.0;
-    totalElements = 0;
-    validReadingsCount = 0;
+    maxTariff            = VALLEY;
+    maxPower             = -1.0;
+    totalConsumption     = 0.0;
+    averagePower         = 0.0;
+    tempAverage          = 0.0;
+    totalElements        = 0;
+    validReadingsCount   = 0;
     invalidReadingsCount = 0;
-    averagePower = 0.0;
-    maxPower = -1.0;
-    maxTariff = VALLEY;
-    countValley = 0;
-    countFlat = 0;
-    countPeak = 0;
-
+    countValley          = 0;
+    countFlat            = 0;
+    countPeak            = 0;
 /* ----------------------------- Input section ------------------------------ */
     printf("--- Smart Grid Analysis System (PR1) ---\n");
     printf("LOAD DATA FROM FILE. ENTER FILE NAME >> ");
 
     scanf("%15s", filename);
     fileToRead = fopen(filename, "r");
+    if (fileToRead == NULL) {
+        printf("Error: Could not open file %s.\n", filename);
+        return 0;
+    }
     fscanf(fileToRead, "%d", &totalElements);
 
     if (totalElements > MAX_READINGS) {
 
         totalElements = MAX_READINGS;
     }
-
     for (i = 0; i < totalElements; i++) {
 
         fscanf(fileToRead, "%lf %d", &powerData[i], &tempTariffCode);
-
         if (tempTariffCode == 1) {
             tariffData[i] = VALLEY;
         } else if (tempTariffCode == 2) {
@@ -107,15 +108,13 @@ int main(void) {
             invalidValues[invalidReadingsCount] = powerData[i];
             invalidReadingsCount++;
         }
-
     }
-
     if (validReadingsCount > 0) {
 
-        averagePower = totalConsumption / validReadingsCount;
-
+        tempAverage = totalConsumption / validReadingsCount;
+        averagePower = (int)(tempAverage * DECIMAL_FACTOR + ROUNDING_OFFSET) /
+                       (double)DECIMAL_FACTOR;
     }
-
 /* ----------------------------- Output section ----------------------------- */
     printf("\nProcessing %d records...\n", totalElements);
     printf("----------------------------------------\n");
@@ -135,6 +134,7 @@ int main(void) {
         } else {
             printf("PEAK");
         }
+
         printf(")\n\n");
 
         printf("Distribution by Tariff:\n");
