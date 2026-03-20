@@ -1,3 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*    UUU   UUU    OOOOO      CCCCC             Ingeniería Informática        */
+/*    UUU   UUU   OOOOOOO    CCCCCCC            Fundamentos de Programación   */
+/*    UUU   UUU  OOO   OOO  CCC                 PEC2 - 20252                  */
+/*    UUU   UUU  OOO   OOO  CCC                                               */
+/*    UUU   UUU  OOO   OOO  CCC                 File: main.c                  */
+/*     UUU UUU    OOOOOOO    CCCCCCC            Author: Pablo Monteiro        */
+/*      UUUUU      OOOOO      CCCCC             Created: 2026/03/05           */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* Description: C program that determines if irrigation should be activated
+   based on humidity and plant type */
+
 #include <stdio.h> /* Standard input/output library */
 #include <stdbool.h> /* Standard boolean type library */
 
