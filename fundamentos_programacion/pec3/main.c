@@ -26,29 +26,32 @@ typedef enum {OPERATIONAL, OUT, WARNING, LOW,} tState;
 
 int main(void) {
 /* ------------------------- Variable declarations -------------------------- */
-    tState state;
-    FILE   *file;
     char   fname[MAX_LEN];
     int    stk[ROWS][COLS];
     int    row0;
     int    row1;
     int    row2;
     int    total;
-/* ----------------------------- Input section ------------------------------ */
-    printf("INPUT\n");
-    printf("FILENAME?\n");
-    scanf("%15s", fname);
-    file = fopen(fname, "r");
-    fscanf(file, "%d %d %d", &stk[0][0], &stk[0][1], &stk[0][2]);
-    fscanf(file, "%d %d %d", &stk[1][0], &stk[1][1], &stk[1][2]);
-    fscanf(file, "%d %d %d", &stk[2][0], &stk[2][1], &stk[2][2]);
-    fclose(file);
-/* --------------------------- Processing section --------------------------- */
+    FILE   *file;
+    tState state;
+
     row0  = 0;
     row1  = 0;
     row2  = 0;
     total = 0;
     state = OPERATIONAL;
+/* ----------------------------- Input section ------------------------------ */
+    printf("INPUT\n");
+    printf("FILENAME?\n");
+    scanf("%15s", fname);
+    file  = fopen(fname, "r");
+
+    fscanf(file, "%d %d %d", &stk[0][0], &stk[0][1], &stk[0][2]);
+    fscanf(file, "%d %d %d", &stk[1][0], &stk[1][1], &stk[1][2]);
+    fscanf(file, "%d %d %d", &stk[2][0], &stk[2][1], &stk[2][2]);
+
+    fclose(file);
+/* --------------------------- Processing section --------------------------- */
     row0  = stk[0][0] + stk[0][1] + stk[0][2];
     row1  = stk[1][0] + stk[1][1] + stk[1][2];
     row2  = stk[2][0] + stk[2][1] + stk[2][2];
